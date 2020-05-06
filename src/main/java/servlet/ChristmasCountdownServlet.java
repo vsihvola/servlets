@@ -1,8 +1,9 @@
 package servlet;
 
+import static java.time.temporal.ChronoUnit.*;
+
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,26 +14,24 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/christmas")
 public class ChristmasCountdownServlet extends HttpServlet {
 
-	@Override
-	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-		long daysLeft = GetDay();
-		// resp.getWriter().println("Days until Christmas " + daysLeft);
-		// pass the time string to the JSP page as an attribute
-		req.setAttribute("untilChristmas", daysLeft);
+    @Override
+    public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-		// forward the request to the index.jsp page
-		req.getRequestDispatcher("/WEB-INF/ChristmasCountdown.jsp").forward(req, resp);
-	}
+        LocalDate today = LocalDate.now();
+        LocalDate christmas = getNextChristmas(today);
 
-	public static long GetDay() {
+        long daysBetween = DAYS.between(today, christmas);
+        req.setAttribute("days", daysBetween);
 
-		LocalDate Today = LocalDate.now();
-		LocalDate Christmas = LocalDate.of(2020, 12, 24);
+        req.getRequestDispatcher("/WEB-INF/christmasCountdown.jsp").forward(req, resp);
+    }
 
-		long daysLeft = ChronoUnit.DAYS.between(Today, Christmas);
-
-		return daysLeft;
-
-	}
-
+    private LocalDate getNextChristmas(LocalDate start) {
+        LocalDate christmasThisYear = LocalDate.of(start.getYear(), 12, 24);
+        if (start.isBefore(christmasThisYear)) {
+            return christmasThisYear;
+        } else {
+            return christmasThisYear.plusYears(1);
+        }
+    }
 }
