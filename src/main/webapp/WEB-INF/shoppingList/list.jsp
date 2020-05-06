@@ -2,6 +2,7 @@
 <html>
 <head>
 <title>Shopping List</title>
+<link rel="stylesheet" href="https://unpkg.com/sakura.css/css/sakura.css" type="text/css">
 </head>
 <body>
 	<h1>Shopping list</h1>
