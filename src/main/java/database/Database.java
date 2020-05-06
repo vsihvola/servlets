@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Database {
-	private static final String JDBC_URL = System.getenv("JDBC_DATABASE_URL");
+	private static final String JDBC_URL = "jdbc:sqlite:C:\\sqlite\\shoppingList.sqlite";
 
 	public static Connection connect() throws SQLException {
 		return DriverManager.getConnection(JDBC_URL);
