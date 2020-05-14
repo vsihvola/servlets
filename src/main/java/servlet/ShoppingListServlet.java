@@ -25,6 +25,7 @@ public class ShoppingListServlet extends HttpServlet {
 		req.setAttribute("items", allItems);
 
 		req.getRequestDispatcher("/WEB-INF/shoppingList/list.jsp").forward(req, resp);
+
 	}
 
 	@Override
@@ -35,5 +36,18 @@ public class ShoppingListServlet extends HttpServlet {
 		ShoppingListItem item = new ShoppingListItem(req.getParameter("title"));
 		this.dao.addItem(item);
 		resp.sendRedirect("/list");
+	}
+
+	@Override
+	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		// TODO: selvitä mikä `id` annettiin pyynnön mukana
+		// TODO: käytä dao-olioita id-arvoa vastaavan olion poistamiseksi kannasta
+
+		long id = Long.parseLong(req.getParameter("id"));
+		ShoppingListItem item = dao.getItem(id);
+		if (item != null) {
+			dao.removeItem(item);
+		}
+
 	}
 }
